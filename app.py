@@ -3,7 +3,7 @@ import requests
 
 app = Flask(__name__)
 
-RPI_URL = "https://qcam.site"
+RPI_URL = "https://qcam.site/hls/stream.m3u8"
 
 @app.route('/')
 def index():
