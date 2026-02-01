@@ -1,12 +1,11 @@
-from fastapi import FastAPI
-from fastapi.responses import JSONResponse
+from flask import Flask, jsonify
 
-app = FastAPI()
+app = Flask(__name__)
 
-@app.get("/")
-def root():
-    return {"status": "QCam API is running"}
+@app.route("/")
+def home():
+    return "QCam API is running"
 
-@app.get("/ping")
-def ping():
-    return JSONResponse({"pong": True})
+@app.route("/api/health")
+def health():
+    return jsonify(status="ok")
