@@ -3,7 +3,7 @@ import requests
 
 app = Flask(__name__)
 
-RPI_URL = "https://preston-tremendous-dozens-organizer.trycloudflare.com"
+RPI_URL = "https://qcam.site"
 
 @app.route('/')
 def index():
