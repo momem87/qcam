@@ -13,3 +13,8 @@
   protocol = "tcp"
   [[services.ports]]
     port = 8554
+[[services]]
+  internal_port = 8888
+  protocol = "tcp"
+  [[services.ports]]
+    port = 8888
