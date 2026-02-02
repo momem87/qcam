@@ -9,9 +9,6 @@ primary_region = 'iad'
   [[services.ports]]
     port = 80
     handlers = ["http"]
-  [[services.ports]]
-    port = 443
-    handlers = ["tls", "http"]
 
 [[services]]
   internal_port = 8554
@@ -20,5 +17,5 @@ primary_region = 'iad'
     port = 8554
 
 [env]
-  MTX_RTSP = "yes"
+  MTX_PATHS_ALL_SOURCE = "publisher"
   MTX_RTSP_PROTOCOLS = "tcp"
