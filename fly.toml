@@ -1,3 +1,8 @@
+app = 'qcam'
+primary_region = 'iad'
+
+[build]
+
 [[services]]
   internal_port = 8889
   protocol = "tcp"
@@ -13,8 +18,3 @@
   protocol = "tcp"
   [[services.ports]]
     port = 8554
-[[services]]
-  internal_port = 8888
-  protocol = "tcp"
-  [[services.ports]]
-    port = 8888
