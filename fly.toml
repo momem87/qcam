@@ -18,3 +18,7 @@ primary_region = 'iad'
   protocol = "tcp"
   [[services.ports]]
     port = 8554
+
+[env]
+  MTX_RTSP = "yes"
+  MTX_RTSP_PROTOCOLS = "tcp"
