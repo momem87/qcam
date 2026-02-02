@@ -1,43 +1,44 @@
-from flask import Flask, request, send_from_directory, render_template_string
+from flask import Flask, request, Response, send_from_directory, render_template_string
 import os
 
 app = Flask(__name__)
 UPLOAD_FOLDER = '/tmp'
 
-# Dashboard HTML
+# Dashboard HTML with MJPEG Stream
 HTML_PAGE = '''
-<!DOCTYPE html>
 <html>
-<head>
-    <title>QCam Dashboard</title>
-    <meta http-equiv="refresh" content="5"> <style>
-        body { background: #121212; color: white; text-align: center; font-family: sans-serif; }
-        img { width: 80%; border: 5px solid #333; border-radius: 15px; margin-top: 20px; }
-    </style>
-</head>
-<body>
-    <h1>QCam Live Feed</h1>
-    <img src="/live?t={{time}}" alt="Live Stream">
-    <p>Auto-refreshing every 5 seconds...</p>
-</body>
+    <head><title>QCam Live Stream</title></head>
+    <body style="background:#000; color:#fff; text-align:center;">
+        <h1>QCam Live Stream</h1>
+        <img src="/video_feed" style="width:80%; border:3px solid #333;">
+        <p>Streaming from Raspberry Pi...</p>
+    </body>
 </html>
 '''
 
 @app.route('/')
 def index():
-    import time
-    return render_template_string(HTML_PAGE, time=time.time())
+    return render_template_string(HTML_PAGE)
 
 @app.route('/upload', methods=['POST'])
 def upload():
-    if 'file' not in request.files: return "No file", 400
     file = request.files['file']
     file.save(os.path.join(UPLOAD_FOLDER, 'latest.jpg'))
     return "OK", 200
 
-@app.route('/live')
-def live():
-    return send_from_directory(UPLOAD_FOLDER, 'latest.jpg')
+def generate_frames():
+    while True:
+        # Read the latest image saved by /upload
+        if os.path.exists(os.path.join(UPLOAD_FOLDER, 'latest.jpg')):
+            with open(os.path.join(UPLOAD_FOLDER, 'latest.jpg'), 'rb') as f:
+                frame = f.read()
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+@app.route('/video_feed')
+def video_feed():
+    return Response(generate_frames(),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
