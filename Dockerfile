@@ -1,1 +1,1 @@
-FROM bluenviron/mediamtx:latest-ffmpeg
+FROM bluenviron/mediamtx:latest
