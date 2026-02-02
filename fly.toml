@@ -1,32 +1,13 @@
 app = 'qcam'
 primary_region = 'iad'
-
 [build]
-
 [[services]]
-  internal_port = 8889
+  internal_port = 1935
   protocol = "tcp"
-  auto_stop_machines = false
-  auto_start_machines = true
-  min_machines_running = 1
-
+  [[services.ports]]
+    port = 1935
+[[services]]
+  internal_port = 8080
+  protocol = "tcp"
   [[services.ports]]
     port = 80
-    handlers = ["http"]
-  [[services.ports]]
-    port = 443
-    handlers = ["tls", "http"]
-
-  [[services.tcp_checks]]
-    interval = "15s"
-    timeout = "2s"
-    grace_period = "60s"
-
-[[services]]
-  internal_port = 8554
-  protocol = "tcp"
-  [[services.ports]]
-    port = 8554
-
-[env]
-  MTX_PROTOCOLS = "tcp"
