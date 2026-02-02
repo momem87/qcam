@@ -3,11 +3,9 @@ primary_region = 'iad'
 
 [build]
 
-# 1. WebRTC & API Service
 [[services]]
   internal_port = 8889
   protocol = "tcp"
-  # Keep the server running to avoid cold starts during streaming
   auto_stop_machines = false
   auto_start_machines = true
   min_machines_running = 1
@@ -19,13 +17,11 @@ primary_region = 'iad'
     port = 443
     handlers = ["tls", "http"]
 
-  # Health checks with grace period to prevent boot loops
   [[services.tcp_checks]]
-    interval = "10s"
+    interval = "15s"
     timeout = "2s"
-    grace_period = "30s"
+    grace_period = "60s"
 
-# 2. RTSP Streaming Service
 [[services]]
   internal_port = 8554
   protocol = "tcp"
@@ -34,4 +30,3 @@ primary_region = 'iad'
 
 [env]
   MTX_PROTOCOLS = "tcp"
-  MTX_WEBRTC_ADDITIONAL_HOSTS = "qcam.fly.dev"
